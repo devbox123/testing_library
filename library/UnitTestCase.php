@@ -158,6 +158,7 @@ class UnitTestCase extends BaseTestCase
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
 
         oxRegistry::getUtils()->cleanStaticCache();
+        oxRegistry::set('oxtableviewnamegenerator', null);
 
         if ($this->getTestConfig()->getModulesToActivate()) {
             $testModuleLoader = $this->_getModuleLoader();

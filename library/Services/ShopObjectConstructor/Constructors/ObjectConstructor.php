@@ -130,25 +130,8 @@ class ObjectConstructor
     {
         $aParameters = is_array($aParameters) ? $aParameters : array();
         $mResponse = call_user_func_array(array($this->getObject(), $sFunction), $aParameters);
-        $this->clearCache();
 
         return $mResponse;
-    }
-
-    /**
-     * flush cache if needed
-     */
-    public function clearCache()
-    {
-        if (class_exists('oxReverseProxyBackEnd')) {
-            try {
-                $oCache = oxRegistry::get('oxReverseProxyBackend');
-                if ($oCache->isEnabled()) {
-                    $oCache->execute();
-                }
-            } catch (Exception $oE) {
-            }
-        }
     }
 
     /**

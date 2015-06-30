@@ -34,9 +34,7 @@ interface ShopServiceInterface
     /**
      * Initiates service.
      *
-     * @param Request       $request
-     *
-     * @return mixed
+     * @param Request $request
      */
     public function init($request);
 }

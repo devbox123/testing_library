@@ -24,6 +24,12 @@
  */
 class ServiceConfig
 {
+    const EDITION_ENTERPRISE = 'EE';
+
+    const EDITION_PROFESSIONAL = 'PE';
+
+    const EDITION_COMMUNITY = 'CE';
+
     /** @var string Tested shop directory. */
     private $shopDirectory;
 

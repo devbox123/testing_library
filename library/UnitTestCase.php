@@ -647,6 +647,7 @@ class UnitTestCase extends BaseTestCase
      */
     public function getProxyClassName($superClassName)
     {
+        $superClassName = oxRegistry::get('oxUtilsObject')->getClassName(strtolower($superClassName));
         $escapedSuperClassName = str_replace('\\', '_', $superClassName);
         $proxyClassName = "{$escapedSuperClassName}Proxy";
 
@@ -692,7 +693,6 @@ class UnitTestCase extends BaseTestCase
      */
     public function getProxyClass($superClassName, array $params = null)
     {
-        $superClassName = oxRegistry::get('oxUtilsObject')->getClassName(strtolower($superClassName));
         $proxyClassName = $this->getProxyClassName($superClassName);
         if (!empty($params)) {
             // Create an instance using Reflection, because constructor has parameters

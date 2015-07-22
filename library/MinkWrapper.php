@@ -695,7 +695,8 @@ class MinkWrapper extends BaseTestCase
      */
     public function waitForJQueryToFinish($iTimeout = 10000)
     {
-        $this->getMinkSession()->wait($iTimeout * $this->_iWaitTimeMultiplier,
+        $iTimeout *= $this->_iWaitTimeMultiplier;
+        $this->getMinkSession()->wait($iTimeout,
             "(typeof jQuery !== 'undefined' && 0 === jQuery.active && 0 === jQuery(':animated').length)"
         );
     }
@@ -781,6 +782,69 @@ class MinkWrapper extends BaseTestCase
     public function getLocation()
     {
         return $this->getMinkSession()->getDriver()->getCurrentUrl();
+    }
+
+    /**
+     * Registers ajax requests catcher, so that it would be possible to check if there are any active ajax requests going on.
+     */
+    public function registerAjaxRequestsCatcher()
+    {
+        $script = <<<JS
+        this.browserbot.getCurrentWindow().eval("\
+        if (typeof acceptanceTests_isAjaxLoading == 'undefined') { \
+            acceptanceTests_isAjaxLoading = (function() { \
+                var originalSend = XMLHttpRequest.prototype.send, \
+                    currentRequests = []; \
+                XMLHttpRequest.prototype.send = function() { \
+                    currentRequests.push(this); \
+                    originalSend.apply(this, arguments); \
+                    this.addEventListener('readystatechange', function() { \
+                        if (this.readyState === XMLHttpRequest.DONE) { \
+                            var index = currentRequests.indexOf(this); \
+                            if (index >= 0) { \
+                                currentRequests.splice(index, 1); \
+                            } \
+                        } \
+                    }, false); \
+                }; \
+                return function() { \
+                    return currentRequests.length > 0; \
+                } \
+            }()); \
+        } \
+        ");
+JS;
+        $this->getMinkSession()->getDriver()->getBrowser()->getEval($script);
+    }
+
+    /**
+     * Waits for any active ajax requests to finish.
+     * registerAjaxRequestsCatcher() has to be initiated before any ajax request could take place.
+     * If page has jQuery in it, waitForJQueryToFinish can be used instead, as it does not require registration of
+     * ajax requests catcher.
+     *
+     * @param int $timeout in seconds
+     */
+    public function waitForAjaxToComplete($timeout = 20)
+    {
+        $timeout *= 10 * $this->_iWaitTimeMultiplier;
+        for ($passed = 0; $passed <= $timeout; $passed++) {
+            if (!$this->isAjaxLoading()) {
+                return;
+            }
+            usleep(100000);
+        }
+        usleep(500000);
+//        $this->getMinkSession()->wait($iTimeout, "!acceptanceTests_isAjaxLoading()");
+    }
+
+    /**
+     * @return mixed
+     */
+    protected function isAjaxLoading()
+    {
+        $result = $this->getMinkSession()->getDriver()->getBrowser()->getEval('this.browserbot.getCurrentWindow().acceptanceTests_isAjaxLoading()');
+        return $result == 'true';
     }
 
     /**

@@ -525,6 +525,7 @@ class AcceptanceTestCase extends MinkWrapper
         $this->select("lng", "$language");
         $this->select("prf", "Standard");
         $this->clickAndWait("//input[@type='submit']");
+        $this->registerAjaxRequestsCatcher();
 
         $this->frame("navigation");
 
@@ -926,8 +927,10 @@ class AcceptanceTestCase extends MinkWrapper
     {
         $this->waitForPopUp("ajaxpopup", 15000);
         $this->selectWindow("ajaxpopup");
+        $this->registerAjaxRequestsCatcher();
         $this->windowMaximize("ajaxpopup");
         $this->waitForElement($popUpElement);
+        $this->waitForAjaxToComplete();
         $this->checkForErrors();
     }
 
@@ -942,19 +945,20 @@ class AcceptanceTestCase extends MinkWrapper
      */
     public function waitForAjax($value, $locator, $iTimeToWait = 20)
     {
-        $iTimeToWait = $iTimeToWait * $this->_iWaitTimeMultiplier;
-        for ($iSecond = 0; $iSecond <= $iTimeToWait; $iSecond++) {
-            try {
-                if ($this->isElementPresent($locator) && $value == $this->getText($locator)) {
-                    return;
-                }
-            } catch (Exception $e) {
-            }
-            if ($iSecond >= $iTimeToWait) {
-                $this->retryTest("Ajax timeout while waiting for '${locator}' or value is not equal to '${value}' ");
-            }
-            usleep(500000);
-        }
+        $this->waitForAjaxToComplete();
+//        $iTimeToWait = $iTimeToWait * $this->_iWaitTimeMultiplier;
+//        for ($iSecond = 0; $iSecond <= $iTimeToWait; $iSecond++) {
+//            try {
+//                if ($this->isElementPresent($locator) && $value == $this->getText($locator)) {
+//                    return;
+//                }
+//            } catch (Exception $e) {
+//            }
+//            if ($iSecond >= $iTimeToWait) {
+//                $this->retryTest("Ajax timeout while waiting for '${locator}' or value is not equal to '${value}' ");
+//            }
+//            usleep(500000);
+//        }
     }
 
     /**
@@ -968,9 +972,7 @@ class AcceptanceTestCase extends MinkWrapper
         $this->click($item);
         $this->checkForErrors();
         $this->dragAndDropToObject($item, $container);
-        if ($this->isElementPresent($item)) {
-            sleep(1);
-        }
+        $this->waitForAjaxToComplete();
     }
 
     /* ------------------------ Selenium API related functions, override functions ---------------------- */

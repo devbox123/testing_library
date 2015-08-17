@@ -135,14 +135,14 @@ class ObjectConstructor
     }
 
     /**
-     * Returns created object to work with
+     * Returns created object to work with.
      *
-     * @param $sClassName
+     * @param string $sClassName
      * @return object
      */
     protected function _createObject($sClassName)
     {
-        return new $sClassName();
+        return oxNew($sClassName);
     }
 
     /**

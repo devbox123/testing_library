@@ -101,7 +101,7 @@ class ObjectConstructor
     public function setClassParameters($aClassParams)
     {
         $oObject = $this->getObject();
-        $sTableName = $this->_getTableName(get_class($oObject));
+        $sTableName = $oObject->getCoreTableName();
         $aValues = array();
         foreach ($aClassParams as $sParamKey => $sParamValue) {
             if (is_int($sParamKey)) {
@@ -146,32 +146,6 @@ class ObjectConstructor
     }
 
     /**
-     * Return table name from class name.
-     * @example $sClassName = oxArticle; return oxarticles;
-     * @example $sClassName = oxRole; return oxroles;
-     *
-     * @param $sClass
-     *
-     * @return string
-     */
-    protected function _getTableName($sClass)
-    {
-        $aClassNameWithoutS = array("oxarticle", "oxcounter", "oxrole", "oxfile", "oxrating", "oxreview", "oxrecommlist", "oxshop",
-                                    "oxmanufacturer", "oxmediaurl", "oxvoucherserie", "oxorderarticle", "oxorderfile", "oxpayment",
-                                    "oxuserbasketitem", "oxuserbasket", "oxuserpayment", "oxvoucher", "oxvoucherserie", "oxcontent");
-        $aClassNameWithoutIes = array("oxcategory", "oxgbentry");
-
-        $sClassName = $sTableName = strtolower($sClass);
-        if (in_array($sClassName, $aClassNameWithoutS)) {
-            $sTableName = $sClassName . "s";
-        } elseif (in_array($sClassName, $aClassNameWithoutIes)) {
-            $sTableName = substr($sClassName, 0, -1) . "ies";
-        }
-
-        return $sTableName;
-    }
-
-    /**
      * @param $sTableName
      * @param $sParamValue
      * @return string
@@ -195,7 +169,7 @@ class ObjectConstructor
         $sOxid = null;
         $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
 
-        $sTableName = $this->_getTableName(get_class($this->getObject()));
+        $sTableName = $this->getObject()->getCoreTableName();
         $sSql = 'SELECT OXID FROM '. $sTableName .' ORDER BY OXTIMESTAMP DESC LIMIT 1';
         $rs = $oDb->select($sSql);
 

@@ -24,14 +24,13 @@
  */
 class oxListConstructor extends ObjectConstructor
 {
-
     /**
      * Skip loading of config object, as it is already loaded
      *
      * @param $sOxId
      */
     public function load($sOxId) {
-        $this->getObject()->init($sOxId, $this->_getTableName($sOxId));
+        $this->getObject()->init($sOxId, $sOxId);
     }
 
     /**
@@ -79,7 +78,7 @@ class oxListConstructor extends ObjectConstructor
     {
         $aData = array();
         $aFields = $oObject->getFieldNames();
-        $sTableName = $this->_getTableName(get_class($oObject));
+        $sTableName = $oObject->getCoreTableName();
         foreach ($aFields as $sField) {
             $sFieldName = $sTableName.'__'.$sField;
             $aData[$sField] = $oObject->$sFieldName->value;

@@ -103,8 +103,8 @@ class TestConfig
                 include_once $shopPath . '/_version_define.php';
                 $this->shopEdition = OXID_VERSION_EE ? 'EE' : (OXID_VERSION_PE_PE ? 'PE' : 'CE');
             } else {
-                include_once $shopPath . 'core/oxsupercfg.php';
-                include_once $shopPath . 'core/oxutilsobject.php';
+                include_once $shopPath . 'Core/oxsupercfg.php';
+                include_once $shopPath . 'Core/oxutilsobject.php';
                 $config = new \oxConfig();
                 $shopEdition = $config->getEdition();
                 $this->shopEdition = strtoupper($shopEdition);
@@ -152,7 +152,7 @@ class TestConfig
             $shopUrl = $this->getValue('shop_url');
             if (!$shopUrl) {
                 $shopPath = $this->getShopPath();
-                include_once $shopPath . 'core/oxconfigfile.php';
+                include_once $shopPath . 'Core/oxconfigfile.php';
                 $configFile = new \oxConfigFile($shopPath . "config.inc.php");
                 $shopUrl = $shopUrl ? $shopUrl : $configFile->sShopURL;
             }
@@ -171,7 +171,7 @@ class TestConfig
     {
         if (is_null($this->charsetMode)) {
             $shopPath = $this->getShopPath();
-            include_once $shopPath . 'core/oxconfigfile.php';
+            include_once $shopPath . 'Core/oxconfigfile.php';
             $configFile = new \oxConfigFile($shopPath . "config.inc.php");
             $this->charsetMode = $configFile->iUtfMode ? 'utf8' : 'latin1';
         }

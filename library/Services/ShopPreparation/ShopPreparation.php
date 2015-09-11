@@ -38,7 +38,7 @@ class ShopPreparation implements ShopServiceInterface
      */
     public function __construct($config)
     {
-        include_once $config->getShopDirectory() . "core/oxconfigfile.php";
+        include_once $config->getShopDirectory() . "Core/oxconfigfile.php";
         $configFile = new oxConfigFile($config->getShopDirectory() . "config.inc.php");
         $this->_dbHandler = new DbHandler($configFile);
         $this->_dbHandler->setTemporaryFolder($config->getTempDirectory());

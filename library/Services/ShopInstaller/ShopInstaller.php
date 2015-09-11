@@ -54,12 +54,12 @@ class ShopInstaller implements ShopServiceInterface
 
         $shopPath = $config->getShopDirectory();
 
-        include_once $shopPath . "core/oxconfigfile.php";
+        include_once $shopPath . "Core/oxconfigfile.php";
         $this->shopConfig = new oxConfigFile($shopPath . "config.inc.php");
 
         $this->dbHandler = new DbHandler($this->shopConfig);
 
-        include $shopPath ."core/oxconfk.php";
+        include $shopPath ."Core/oxconfk.php";
 
         $serialClassPath = $shopPath ."Edition/Professional/Core/oxserial.php";
         if (file_exists($serialClassPath)) {

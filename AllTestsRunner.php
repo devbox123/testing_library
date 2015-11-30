@@ -142,7 +142,7 @@ class AllTestsRunner extends PHPUnit_Framework_TestCase
         $sTestFileNameEnd = '*[^8]Test.php';
         $isForShopTests = $testConfig->getCurrentTestSuite() == $testConfig->getShopTestsPath();
         if ($isForShopTests && $testConfig->getShopCharset() == 'utf8') {
-            $sTestFileNameEnd = '*utf8Test.php';
+            $sTestFileNameEnd = '*Test.php';
         }
 
         return $sTestFileNameEnd;

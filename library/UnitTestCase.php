@@ -555,7 +555,7 @@ abstract class UnitTestCase extends BaseTestCase
         $arguments = [
             $this->getMock(MailClient::class, $methods)
         ];
-        return $this->getMock(oxemail::class, $methods, $arguments, '', false);
+        return $this->getMock(oxemail::class, $methods, $arguments);
     }
 
     /**

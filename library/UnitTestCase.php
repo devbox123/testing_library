@@ -547,6 +547,14 @@ abstract class UnitTestCase extends BaseTestCase
         $originalClassName = oxRegistry::get('oxUtilsObject')->getClassName($originalClassName);
         return parent::getMock($originalClassName, $methods, $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $cloneArguments);
     }
+    
+    public function getMailerMock($methods = array())
+    {
+        $arguments = [
+            $this->getMock(MailClient::class, $methods)
+        ];
+        return $this->getMock(oxemail::class, $methods, $arguments, '', false);
+    }
 
     /**
      * Calls all the queries stored in $_aTeardownSqls

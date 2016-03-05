@@ -21,6 +21,8 @@
 
 namespace OxidEsales\TestingLibrary;
 
+use oxEmail;
+use OxidEsales\Eshop\Core\MailClient;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorerFactory;
 use OxidEsales\TestingLibrary\Services\Library\DatabaseRestorer\DatabaseRestorerInterface;
 use oxRegistry;

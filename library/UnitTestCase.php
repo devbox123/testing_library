@@ -43,14 +43,6 @@ use modOxUtilsDate;
 
 require_once TEST_LIBRARY_HELPERS_PATH . 'modOxUtilsDate.php';
 
-class DummyMailClient
-{
-    public function __call($name, $params)
-    {
-
-    }
-}
-
 /**
  * Base tests class. Most tests should extend this class.
  */
@@ -561,7 +553,7 @@ abstract class UnitTestCase extends BaseTestCase
     public function getMailerMock($methods = array())
     {
         $arguments = [
-            $this->getMock(DummyMailClient::class, $methods)
+            $this->getMock(MailClient::class, $methods)
         ];
         return $this->getMock(oxemail::class, $methods, $arguments);
     }
